@@ -1,0 +1,49 @@
+# https://taskfile.dev
+
+version: '3'
+
+dotenv: ['.env']
+env:
+  FLUTTER_COMMAND: '{{default "fvm flutter" .TASKFILE_FLUTTER_COMMAND}}'
+  DART_COMMAND: '{{default "fvm dart" .TASKFILE_DART_COMMAND}}'
+  
+tasks:
+  clean:
+    cmds:
+      - $FLUTTER_COMMAND clean
+
+  update_dependencies:
+    cmds:
+      - $FLUTTER_COMMAND pub get
+    aliases:
+      - pub-get
+      - pg
+
+  l10n:build:
+    cmds:
+      - $FLUTTER_COMMAND gen-l10n
+
+  build_runner:build:
+    cmds:
+      - $FLUTTER_COMMAND pub run build_runner build --delete-conflicting-outputs
+
+  build_runner:watch:
+    cmds:
+      - $FLUTTER_COMMAND pub run build_runner watch --delete-conflicting-outputs
+
+  build:
+    cmds:
+      - task: l10n:build
+      - task: build_runner:build
+
+  analyze:
+    cmds:
+      - $DART_COMMAND analyze
+    
+  format:
+    cmds:
+      - $DART_COMMAND format
+
+  doctor:
+    cmds:
+      - $FLUTTER_COMMAND doctor
