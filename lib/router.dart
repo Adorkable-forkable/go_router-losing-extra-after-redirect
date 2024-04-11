@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_router_loses_extra/screens.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'router.g.dart';
 
-@Riverpod(keepAlive: true)
-GoRouter router(RouterRef ref) => GoRouter(
+final appRouter = GoRouter(
     routes: $appRoutes,
     redirect: (context, state) {
       if (state.matchedLocation == "/$details2PartialPath") {
